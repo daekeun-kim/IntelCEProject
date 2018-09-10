@@ -1,0 +1,11 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "isCreatingSolution": true,
+    "environment": "spo",
+    "version": "1.5.1",
+    "libraryName": "intel-ce-project",
+    "libraryId": "789c08ad-9f41-445e-9b91-b2db0efcf4e0",
+    "packageManager": "npm",
+    "componentType": "webpart"
+  }
+}

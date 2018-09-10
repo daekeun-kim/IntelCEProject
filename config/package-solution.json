@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "intel-ce-project-client-side-solution",
+    "id": "789c08ad-9f41-445e-9b91-b2db0efcf4e0",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/intel-ce-project.sppkg"
+  }
+}
