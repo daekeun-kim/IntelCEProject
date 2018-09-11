@@ -9,7 +9,6 @@ import {
 
 import * as strings from 'IntelCeProjectWebPartStrings';
 import IntelCeProject from './components/IntelCeProject';
-import { IIntelCeProjectProps } from './components/IIntelCeProjectProps';
 
 export interface IIntelCeProjectWebPartProps {
   description: string;
@@ -18,7 +17,9 @@ export interface IIntelCeProjectWebPartProps {
 export default class IntelCeProjectWebPart extends BaseClientSideWebPart<IIntelCeProjectWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IIntelCeProjectProps > = React.createElement(
+    
+    const element: React.ReactElement<IIntelCeProjectWebPartProps> = React.createElement(
+     
       IntelCeProject,
       {
         description: this.properties.description
