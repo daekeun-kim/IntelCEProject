@@ -6,49 +6,57 @@ import { Dropdown, IDropdown, DropdownMenuItemType, IDropdownOption } from 'offi
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
+import { IIntelCEMainState } from '../../state/IIntelCEState';
+import { BOMitemForm } from '../BOMitemform/BOMitemform';
 
-export default class IntelCERequestForm extends React.Component{
+
+export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
+    
     
     constructor(props){
         super(props);
     }
- 
+
+    state = {} as IIntelCEMainState;
+    
     public render(){
+        
         return(
             
           <div>
            {/* Sent the props as well to the SubmitForm handler to use the Connected Dispatch. Renders custom dropdown component with validation*/}
            <form onSubmit={this.handleSubmit}>    
             <DatePicker
-                 placeholder="Select a date..."
-                onAfterMenuDismiss={() => console.log('onAfterMenuDismiss called')}
+                placeholder="Select a date..."     
+                value = {this.state.reqeuestdate}        
              />
 
-            <TextField label="title" />
-            <TextField label="Corp Tracker" />
-            <TextField label="ECN #" />
+            <TextField label="title" value = {this.state.title}  />
+            <TextField label="Corp Tracker" value = {this.state.corp_tracker} />
+            <TextField label="ECN #"  value = {this.state.ecn} />
 
             <Dropdown
-            placeHolder="Select an Model"
-            label="Model Affected"
-            id="Basicdrop1"
-            ariaLabel="Basic dropdown example"
-            options={[
-                { key: 'A', text: 'Option a', title: 'I am option a.' },
-                { key: 'B', text: 'Option b' },
-                { key: 'C', text: 'Option c', disabled: true },
-                { key: 'D', text: 'Option d' },
-                { key: 'E', text: 'Option e' },
-                { key: 'F', text: 'Option f' },
-                { key: 'G', text: 'Option g' },
-                { key: 'H', text: 'Option h' },
-                { key: 'I', text: 'Option i' },
-                { key: 'J', text: 'Option j' }
+                placeHolder="Select an Model"
+                label="Model Affected"
+                id="Basicdrop1"
+                ariaLabel="Basic dropdown example"
+                multiSelect
+                options={[
+                    { key: 'Header4', text: 'Colors', itemType: DropdownMenuItemType.Header },
+                    { key: 'red', text: 'Red' },
+                    { key: 'green', text: 'Green' },
+                    { key: 'blue', text: 'Blue' },
+                    { key: 'yellow', text: 'Yellow' },
+                    { key: 'divider_2', text: '-', itemType: DropdownMenuItemType.Divider },
+                    { key: 'Header5', text: 'Flower', itemType: DropdownMenuItemType.Header },
+                    { key: 'rose', text: 'Rose' },
+                    { key: 'lily', text: 'Lily' },
+                    { key: 'sunflower', text: 'Sunflower' }
                 ]}
             />
 
-            <TextField label="ECO #" />
-            <TextField label="Dvision" />
+            <TextField label="ECO #" value = {this.state.eco} />
+            <TextField label="Dvision" value = {this.state.division} />
            
             <ChoiceGroup
             defaultSelectedKey="B"
@@ -67,32 +75,7 @@ export default class IntelCERequestForm extends React.Component{
             required={true}
             />
 
-            <div>
-                <Dropdown
-                placeHolder="Select an Model"
-                label="Model Affected"
-                id="Basicdrop1"
-                ariaLabel="Basic dropdown example"
-                options={[
-                    { key: 'A', text: 'Option a', title: 'I am option a.' },
-                    { key: 'B', text: 'Option b' },
-                    { key: 'C', text: 'Option c', disabled: true },
-                    { key: 'D', text: 'Option d' },
-                    { key: 'E', text: 'Option e' },
-                    { key: 'F', text: 'Option f' },
-                    { key: 'G', text: 'Option g' },
-                    { key: 'H', text: 'Option h' },
-                    { key: 'I', text: 'Option i' },
-                    { key: 'J', text: 'Option j' }
-                    ]}
-                />
-
-                <TextField label="Old P/N" />
-                <TextField label="New P/N" />
-                <TextField label="Part Description" />
-                <TextField label="Impacdts CCL (Y/N)" />
-
-            </div>
+            <BOMitemForm {...this.props}  />
 
             <div>change type
                 <Checkbox label="Process Improvement/CIP Upgrade" ariaDescribedBy={'descriptionID'} />
@@ -115,7 +98,7 @@ export default class IntelCERequestForm extends React.Component{
                 
                 <TextField label="System Cut-In Number " />
                 <TextField label="Field Spares Cut-in Date " />
-                <TextField label=" POR part no longer avail " />
+                <TextField label="POR part no longer avail " />
 
             </div>
             <div>
