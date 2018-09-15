@@ -7,7 +7,7 @@ import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { IIntelCEMainState } from '../../state/IIntelCEState';
-import { BOMitemForm } from '../BOMitemform/BOMitemform';
+import { BOMitemForm, BOMitemForm2 } from '../BOMitemform/BOMitemform';
 
 
 export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
@@ -15,10 +15,40 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
     
     constructor(props){
         super(props);
+
+        this.state = {
+
+            requestid:"",
+            reqeuestdate: new Date(),
+            title:"",
+            corp_tracker:"",
+            ecn:"",
+            division :"",
+            eco:"",
+            affected_models:"",
+            class_change:"",
+            change_type:"",            
+            IntelBOMState:[    
+                {
+                    requestid:"",
+                    model:"",
+                    old_pn:"",
+                    new_pn:"",
+                    part_description:"",
+                    impacts_ccl_yn:""                                
+                }                
+            ]
+            ,
+            sys_cut_in_number :"",
+            field_spares_cut_in_date :new Date(),
+            por_part_no_longer_avail:"",
+            implementation_plan :"",
+            process_node:"",
+            cost_impact:""
+                  
+        } ;
     }
 
-    state = {} as IIntelCEMainState;
-    
     public render(){
         
         return(
@@ -31,15 +61,14 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 value = {this.state.reqeuestdate}        
              />
 
-            <TextField label="title" value = {this.state.title}  />
-            <TextField label="Corp Tracker" value = {this.state.corp_tracker} />
-            <TextField label="ECN #"  value = {this.state.ecn} />
+            <TextField name = "title" label="title" value = {this.state.title}  />
+            <TextField name = "corp_tracker" label="Corp Tracker" value = {this.state.corp_tracker} />
+            <TextField name = "ecn"  value = {this.state.ecn} />
 
-            <Dropdown
+            <Dropdown                           
                 placeHolder="Select an Model"
-                label="Model Affected"
-                id="Basicdrop1"
-                ariaLabel="Basic dropdown example"
+                label="Model Affected"                
+                ariaLabel="Select an Model"
                 multiSelect
                 options={[
                     { key: 'Header4', text: 'Colors', itemType: DropdownMenuItemType.Header },
@@ -55,8 +84,8 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 ]}
             />
 
-            <TextField label="ECO #" value = {this.state.eco} />
-            <TextField label="Dvision" value = {this.state.division} />
+            <TextField name ="eco" label="ECO #" value = {this.state.eco} />
+            <TextField name ="division" label="Dvision" value = {this.state.division} />
            
             <ChoiceGroup
             defaultSelectedKey="B"
@@ -75,7 +104,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             required={true}
             />
 
-            <BOMitemForm {...this.props}  />
+            <BOMitemForm2 IntelBOMState={this.state.IntelBOMState} />
 
             <div>change type
                 <Checkbox label="Process Improvement/CIP Upgrade" ariaDescribedBy={'descriptionID'} />
@@ -96,9 +125,12 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 </p>
 
                 
-                <TextField label="System Cut-In Number " />
-                <TextField label="Field Spares Cut-in Date " />
-                <TextField label="POR part no longer avail " />
+                <TextField name ="sys_cut_in_number" value = {this.state.sys_cut_in_number} label="System Cut-In Number " />
+                <DatePicker
+                    placeholder="Select a date..."     
+                    value = {this.state.field_spares_cut_in_date}        
+                />
+                <TextField name="por_part_no_longer_avail" value = {this.state.por_part_no_longer_avail} label="POR part no longer avail " />
 
             </div>
             <div>

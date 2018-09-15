@@ -10,6 +10,13 @@ export interface IIntelCEMainState{
     affected_models:string;
     class_change:string;
     change_type:string;
+    IntelBOMState:IIntelBOMState[];
+    sys_cut_in_number :string;
+    field_spares_cut_in_date :Date;
+    por_part_no_longer_avail:string;
+    implementation_plan :string;
+    process_node:string;
+    cost_impact:string;
 }
 
 
