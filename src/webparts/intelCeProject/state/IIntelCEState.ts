@@ -1,5 +1,6 @@
 // Represents a purchase request
 export interface IIntelCEMainState{
+    
     requestid:string;
     reqeuestdate:Date;
     title:string;
@@ -17,6 +18,9 @@ export interface IIntelCEMainState{
     implementation_plan :string;
     process_node:string;
     cost_impact:string;
+
+    affectedModelsList:string[]
+
 }
 
 

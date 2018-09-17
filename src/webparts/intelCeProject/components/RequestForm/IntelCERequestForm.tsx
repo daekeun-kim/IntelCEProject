@@ -7,7 +7,9 @@ import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { IIntelCEMainState } from '../../state/IIntelCEState';
-import { BOMitemForm, BOMitemForm2 } from '../BOMitemform/BOMitemform';
+import { BOMitemForm } from '../BOMitemform/BOMitemform';
+import { IIntelBOMStateList } from '../../../../../lib/webparts/intelCeProject/state/IIntelCEState';
+import intelCEDataService from '../../services/intelCEDataService';
 
 
 export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
@@ -44,13 +46,29 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             por_part_no_longer_avail:"",
             implementation_plan :"",
             process_node:"",
-            cost_impact:""
+            cost_impact:"",
+
+            affectedModelsList:[]
                   
         } ;
     }
 
     public render(){
         
+       
+        let affectedModelist = this.state.affectedModelsList;
+
+        console.log("render");
+        console.log(this.state);
+        console.log(affectedModelist);
+
+        var affectedModelsUI= {'data':[]};
+
+        affectedModelist.map( item =>{ item
+            affectedModelsUI.data.push({key:item,text:item});        
+        });
+        console.log("objectModel2");
+
         return(
             
           <div>
@@ -70,18 +88,22 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 label="Model Affected"                
                 ariaLabel="Select an Model"
                 multiSelect
-                options={[
-                    { key: 'Header4', text: 'Colors', itemType: DropdownMenuItemType.Header },
+                /*options={[
+                    { key: 'Header4', text: 'Colors' },
                     { key: 'red', text: 'Red' },
                     { key: 'green', text: 'Green' },
                     { key: 'blue', text: 'Blue' },
                     { key: 'yellow', text: 'Yellow' },
-                    { key: 'divider_2', text: '-', itemType: DropdownMenuItemType.Divider },
-                    { key: 'Header5', text: 'Flower', itemType: DropdownMenuItemType.Header },
+                    { key: 'divider_2', text: '-' },
+                    { key: 'Header5', text: 'Flower'},
                     { key: 'rose', text: 'Rose' },
                     { key: 'lily', text: 'Lily' },
                     { key: 'sunflower', text: 'Sunflower' }
                 ]}
+                */
+
+               options={affectedModelsUI.data}
+
             />
 
             <TextField name ="eco" label="ECO #" value = {this.state.eco} />
@@ -104,7 +126,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             required={true}
             />
 
-            <BOMitemForm2 IntelBOMState={this.state.IntelBOMState} />
+            <BOMitemForm IntelBOMState={this.state.IntelBOMState} onUpdate = {this.handleChildUpdate} />
 
             <div>change type
                 <Checkbox label="Process Improvement/CIP Upgrade" ariaDescribedBy={'descriptionID'} />
@@ -186,10 +208,56 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
 
     componentDidMount(){
 
+        let objintelCEDataService = new intelCEDataService();
+        let resultModelListfromSharePoint= {} as IIntelCEMainState;
+        
+        objintelCEDataService.getProductModelList().then((resp) => {
+            console.log("componentDidMount");
+            console.log("componentDidMount2.2");
+            console.log(resp);
+            resultModelListfromSharePoint = resp;       
+
+            console.log(resultModelListfromSharePoint.affectedModelsList)
+            
+            this.setState({
+                ...this.state,
+                affectedModelsList : resultModelListfromSharePoint.affectedModelsList
+            });
+            console.log("componentDidMount2.23333");
+        });        
+        console.log("componentDidMount1");
+
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    
+        console.log("componentDidUpdate");
+        console.log(this.state);        
+    
+
+        //this.props.onUpdate(this.state.IntelBOMState);
+
     }
 
     handleSubmit(event) {
         alert('A name was submitted: ');
         event.preventDefault();
-      }
+    }
+    handleChildUpdate = (fromChildState:any) => {
+
+        console.log("handleChildUpdate");
+        console.log(fromChildState);
+        console.log(this.state);
+
+        let newIntelBOM = this.state.IntelBOMState;
+        newIntelBOM = fromChildState;
+
+        this.setState({
+            ...this.state,
+            IntelBOMState : newIntelBOM
+        })           
+        
+        console.log(this.state.IntelBOMState);        
+    }
+
 }

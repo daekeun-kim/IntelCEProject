@@ -3,9 +3,7 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { IIntelBOMState, IIntelBOMStateList } from '../../state/IIntelCEState';
 
-
-
-export class BOMitemForm extends React.Component<IIntelBOMStateList,IIntelBOMStateList>{
+export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
 
     constructor(props){
         super(props);
@@ -30,85 +28,46 @@ export class BOMitemForm extends React.Component<IIntelBOMStateList,IIntelBOMSta
     componentDidMount(){
 
         this.setState({
+            ...this.state,
             IntelBOMState:this.props.IntelBOMState
         });
 
     }   
 
-    handleCreate = (data) => {
-        const { IntelBOMState } = this.state;
-        console.log(IntelBOMState);
-        this.setState({
-            IntelBOMState: IntelBOMState.concat({ requestid: this.id++, ...data })
-        })
-      }
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
-      handleRemove = (id) => {
-        const { IntelBOMState } = this.state;
-        this.setState({
-            IntelBOMState: IntelBOMState.filter(info => info.requestid !== id)
-        })
-      }
-
-    public render(){
-        
-        const { IntelBOMState } = this.state;
-        return(            
-        <div>
-            <button type="button" onClick={this.handleCreate} >Add impact intel BOM</button>
-            
-            <BOMitemList
-                items ={IntelBOMState}
-                onRemove={this.handleRemove}
-            />
-        </div>
-        );
     }
-}
-
-
-export class BOMitemForm2 extends React.Component<IIntelBOMStateList,IIntelBOMStateList>{
-
-    constructor(props){
-        super(props);
-
-        this.state = {
-            IntelBOMState:[    
-                {
-                    requestid:"",
-                    model:"",
-                    old_pn:"",
-                    new_pn:"",
-                    part_description:"",
-                    impacts_ccl_yn:""
-                }
-            ]
-        } ;
-        
-    }   
-
-    id = 0  
-
-    componentDidMount(){
-
-        this.setState({
-            IntelBOMState:this.props.IntelBOMState
-        });
-
-    }   
 
     handleCreate = (data) => {
+
         const { IntelBOMState } = this.state;
-        console.log("TESt");
-        console.log(IntelBOMState);
+        console.log("HandleCreate :");
+        console.log(IntelBOMState);  
+
+        let newIntelBOMState = {
+            requestid: ""+this.id++,
+            model:"",
+            old_pn:"",
+            new_pn:"",
+            part_description:"",
+            impacts_ccl_yn:""
+        } as IIntelBOMState
+
+        let resultState = IntelBOMState.concat(newIntelBOMState);
+
         this.setState({
-            IntelBOMState: IntelBOMState.concat({ requestid: this.id++, ...data })
-        })
+            IntelBOMState: resultState
+        });
+
+        this.props.onUpdate(resultState);
+
       }
 
       handleRemove = (id) => {
        
         const { IntelBOMState } = this.state;
+
+        let resultState;
 
         if (IntelBOMState.length < 2)
         {
@@ -116,46 +75,51 @@ export class BOMitemForm2 extends React.Component<IIntelBOMStateList,IIntelBOMSt
         }
         else
         {
+
+            resultState = IntelBOMState.filter(info => info.requestid !== id);
+
             this.setState({
             IntelBOMState: IntelBOMState.filter(info => info.requestid !== id)
-        })
-    }
+            })
+
+            this.props.onUpdate(resultState);
+        }
 
 
-        console.log(id);
+
         console.log(IntelBOMState);
       }
 
 
       handleInputChange = (e) => {
     
-        console.log("change3");
-        console.log(e.target.name);
-        console.log(e.target.value);
-        console.log(e.target);
-        console.log(e.target.dataset.index);
-        console.log(e.target.dataset.name);
+        console.log("handleInputChange");
 
         const { IntelBOMState } = this.state;
         let changneIntelbomstate =  [...this.state.IntelBOMState];
         let chaneitem = 
         changneIntelbomstate[e.target.dataset.index][e.target.dataset.name] = e.target.value;
+
         console.log(changneIntelbomstate[e.target.dataset.index][e.target.dataset.name]);
 
-        this.setState({
-            IntelBOMState: IntelBOMState.map((item,index) =>
+        let resultState = IntelBOMState.map((item,index) =>
             {
-             if (index === e.target.dataset.index)
-             {
-                return chaneitem;
-             }
-             else
-             {
-                return item;
-             }
+                if (index === e.target.dataset.index)
+                {
+                    return chaneitem;
+                }
+                else
+                {
+                    return item;
+                }
             })
+
+
+        this.setState({
+            IntelBOMState: resultState
         })
 
+        this.props.onUpdate(resultState);
         console.log(this.state);
         
     }
@@ -198,93 +162,4 @@ export class BOMitemForm2 extends React.Component<IIntelBOMStateList,IIntelBOMSt
         </div>
         );
     }
-}
-
-
-class BOMitemList extends React.Component<any,any>{
-    
-    constructor(props){
-        super(props);
-    }
-    static defaultProps = {
-        items:[],
-        onRemove: () => console.warn('onRemove not defined'),
-      }
-
-    render() {
-      const { items, onRemove } = this.props;
-      console.log(items);
-      
-      const itemlist = items.map((item,index) =>    
-        <BOMitem
-            key = {item.requestid}
-            item={item}
-            onRemove = {onRemove}
-            index = {index}
-        />
-    );
-    
-    console.log(itemlist);
-      return (
-        <div>
-            {itemlist} 
-        </div>
-      );
-    }
-  }
-
-class BOMitem extends React.Component<any,any>{
-
-    static defaultProps = {
-        onRemove: () => console.warn('onRemove not defined'),
-      }
-
-      handleRemove = () => {
-
-        const { item, onRemove } = this.props;
-        console.log(item);
-        onRemove(item.requestid);        
-      }
-
-      handleChange = (e) => {
-
-        const { name, value } = e.target;
-        this.setState({
-          [name]: value
-        });            
-      }
-
-
-    public render(){
-        console.log(this.props.item);
-        return(            
-        <div> 
-            <div>
-                <Dropdown
-                    placeHolder="Select an Model"
-                    label="Model Affected"
-                    ariaLabel="Basic dropdown example"
-                    options={[
-                        { key: 'A', text: 'Option a', title: 'I am option a.' },
-                        { key: 'B', text: 'Option b' },
-                        { key: 'C', text: 'Option c', disabled: true },
-                        { key: 'D', text: 'Option d' },
-                        { key: 'E', text: 'Option e' },
-                        { key: 'F', text: 'Option f' },
-                        { key: 'G', text: 'Option g' },
-                        { key: 'H', text: 'Option h' },
-                        { key: 'I', text: 'Option i' },
-                        { key: 'J', text: 'Option j' }
-                        ]}
-                    />
-                <TextField name={`${"TEst"}.old_pn`} label="Old P/N"  />
-                <TextField onChange={this.handleChange} label="New P/N" />
-                <TextField onChange={this.handleChange} label="Part Description" />
-                <TextField onChange={this.handleChange} label="Impacdts CCL (Y/N)" />
-                <button type="button" onClick={this.handleRemove} title="Remove Item" >Remove item</button>
-            </div>
-        </div>
-        );
-    }
-
 }
