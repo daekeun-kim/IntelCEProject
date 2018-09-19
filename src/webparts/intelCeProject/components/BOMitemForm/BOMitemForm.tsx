@@ -132,24 +132,18 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
             <button type="button" onClick={this.handleCreate} >Add impact intel BOM</button>
             {this.state.IntelBOMState.map((item, index) =>
                 <div key = {item.requestid} >
-                    <Dropdown
+
+                    <select onChange={this.handleInputChange } data-index={index} data-name="model">  
+                        <option key="initial" value="">Select an Model...</option>
+                    {
+                        this.props.affectedMOdels.map(modelitem =>{
+                           return <option key={modelitem.key} value={modelitem.key}>{modelitem.text}</option>                          
+                        }) 
+                     }                         
+
                         
-                        placeHolder="Select an Model"
-                        label="Model Affected"
-                        ariaLabel="Basic dropdown example"
-                        options={[
-                            { key: 'A', text: 'Option a', title: 'I am option a.' },
-                            { key: 'B', text: 'Option b' },
-                            { key: 'C', text: 'Option c', disabled: true },
-                            { key: 'D', text: 'Option d' },
-                            { key: 'E', text: 'Option e' },
-                            { key: 'F', text: 'Option f' },
-                            { key: 'G', text: 'Option g' },
-                            { key: 'H', text: 'Option h' },
-                            { key: 'I', text: 'Option i' },
-                            { key: 'J', text: 'Option j' }
-                            ]}
-                    />
+                       
+                    </select>
 
                     <input onChange={this.handleInputChange } data-index={index} data-name="old_pn"  />
                     <input onChange={this.handleInputChange } data-index={index} data-name="new_pn"   />
@@ -162,4 +156,5 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
         </div>
         );
     }
+
 }

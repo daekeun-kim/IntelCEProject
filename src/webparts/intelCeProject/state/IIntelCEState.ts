@@ -2,7 +2,7 @@
 export interface IIntelCEMainState{
     
     requestid:string;
-    reqeuestdate:Date;
+    reqeuestdate:string;
     title:string;
     corp_tracker:string;
     ecn: string;
@@ -13,13 +13,16 @@ export interface IIntelCEMainState{
     change_type:string;
     IntelBOMState:IIntelBOMState[];
     sys_cut_in_number :string;
-    field_spares_cut_in_date :Date;
+    field_spares_cut_in_date :string;
     por_part_no_longer_avail:string;
     implementation_plan :string;
     process_node:string;
     cost_impact:string;
 
-    affectedModelsList:string[]
+    affectedModelsList:string[];
+
+    isShowchange_type_freetext: boolean;
+    change_type_freetext:string;
 
 }
 
