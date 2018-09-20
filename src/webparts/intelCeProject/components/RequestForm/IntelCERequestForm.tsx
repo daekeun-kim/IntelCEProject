@@ -5,12 +5,13 @@ import { ChoiceGroup, IChoiceGroupOption } from 'office-ui-fabric-react/lib/Choi
 import { BaseComponent, createRef } from 'office-ui-fabric-react/lib/Utilities';
 import { Dropdown, IDropdown, DropdownMenuItemType, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
-import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton, IButtonProps ,ActionButton } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { IIntelCEMainState } from '../../state/IIntelCEState';
 import { BOMitemForm } from '../BOMitemform/BOMitemform';
 import { IIntelBOMStateList } from '../../../../../lib/webparts/intelCeProject/state/IIntelCEState';
 import intelCEDataService from '../../services/intelCEDataService';
+import styles from '../Assets/IntelCeProject.module.scss'
 
 
 export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
@@ -20,6 +21,8 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
         super(props);
 
         let currnetDate = this.GetCurrentDateString();        
+
+        this.handleSubmit = this.handleSubmit.bind(this);
 
 
         this.state = {
@@ -37,6 +40,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             IntelBOMState:[    
                 {
                     requestid:"",
+                    seq:"1",
                     model:"",
                     old_pn:"",
                     new_pn:"",
@@ -93,123 +97,200 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             affectedModelsUI.data.push({key:item,text:item});        
         });        
 
-        return(
-            
-          <div>
-
+        return(            
+        
+        <div>
            <form onSubmit={this.handleSubmit}>    
-            
-            <div>
-                <label>Date: 
-                    <input type="text" name = "reqeuestdate"                
-                    value = {this.state.reqeuestdate} onChange={this.handleChange} />
-                </label>
-            </div>
-
-            <div>
-                <label>Title: 
-                    <input type="text" name = "title"                
-                    value = {this.state.title} onChange={this.handleChange} />
-                </label>
-            </div>
-
-            <div>
-                <label>Corp tracker #: 
-                    <input type="text" name = "corp_tracker"                
-                    value = {this.state.corp_tracker} onChange={this.handleChange} />
-                </label>
-            </div>
-
-            <div>
-                <label>ECN #: 
-                    <input type="text" name = "ecn"                
+           <table className={styles.tableW3c}>
+           <tr>
+               <th>
+                <div>
+                    <label className={styles.labelW3c} htmlFor="intel_date">Date</label>
+                </div>
+               </th>
+               <td>
+                <div>
+                    <input id="intel_date"className={styles.inputW3c} type="text" name = "reqeuestdate"     
+                        placeholder="Date"           
+                        value = {this.state.reqeuestdate} onChange={this.handleChange} />   
+                </div>
+               </td>
+               <th>
+                    <label className={styles.labelW3c} htmlFor="intel_title">title</label>
+               </th>
+               <td>
+                <input id="intel_title" className={styles.inputW3c} type="text" name = "title"                
+                    value = {this.state.title} onChange={this.handleChange} />  
+               </td>
+           </tr>
+           <tr>
+              <th>
+                <div>
+                    <label className={styles.labelW3c}>Corp tracker #</label>
+                </div>
+               </th>
+               <td>
+                <div>
+                    <input className={styles.inputW3c} type="text" name = "corp_tracker"                
+                        value = {this.state.corp_tracker} onChange={this.handleChange} />
+                </div>
+               </td>
+               <th>
+                    <label className={styles.labelW3c} >ECN #</label>
+               </th>
+               <td>
+                 <input className={styles.inputW3c} type="text" name = "ecn"                
                     value = {this.state.ecn} onChange={this.handleChange} />
-                </label>
-            </div>
-
-            <Dropdown                           
-                placeHolder="Select an Model"
-                label="Model Affected"                
-                ariaLabel="Select an Model"
-                multiSelect
-                onChanged={this.handleChangeMultiSelect}
-                options={affectedModelsUI.data}
-                ref={ref => {
-                    this.modeldropdown = ref;
-                  }}
-            />
-
-            <div>
-                <label>ECO #: <input type="text" name = "eco"                
-                    value = {this.state.eco} onChange={this.handleChange} />
-                </label>
-            </div>
-
-            <div>
-                <label>Dvision #: <input type="text" name = "division"                
-                    value = {this.state.division} onChange={this.handleChange} />
-                </label>
-            </div>
+               </td>                
+           </tr>
+           <tr>
+              <th>
+                <div>
+                    <label className={styles.labelW3c}>Division</label>
+                </div>
+               </th>
+               <td>
+                <div>
+                    <input className={styles.inputW3c} type="text" name = "division"                
+                        value = {this.state.division} onChange={this.handleChange} />   
+                </div>
+               </td>
+               <th>
+                    <label  className={styles.labelW3c} >ECO #</label>
+               </th>
+               <td>
+                <input className={styles.inputW3c} type="text" name = "eco"                
+                      value = {this.state.eco} onChange={this.handleChange} />
+               </td>                
+           </tr>
+           <tr>
+              <th>
+                <div>
+                    <label className={styles.labelW3c}>Affected Models</label>
+                </div>
+               </th>
+               <td colSpan={3}>
+                <div>
+                    <Dropdown                           
+                        placeHolder="Select an Model"                           
+                        ariaLabel="Select an Model"
+                        multiSelect
+                        onChanged={this.handleChangeMultiSelect}
+                        options={affectedModelsUI.data}
+                        ref={ref => {
+                            this.modeldropdown = ref;
+                        }}
+                    /> 
+                </div>
+               </td>               
+           </tr>
+           </table>
            
-             <fieldset>
-                <legend>class change</legend>
-                <div>
-                    <input type="radio" id="class_a" 
-                        name="class_change" value="A" 
-                        checked={this.state.class_change === 'A'} 
-                        onChange={this.handleChange} />                        
-                    <label htmlFor="class_a">Class A</label>
-                </div>
-                <div>
-                    <input type="radio" id="class_b" 
-                        name="class_change" value="B"
-                        checked={this.state.class_change === 'B'}
-                        onChange={this.handleChange} />                        
-                    <label htmlFor="class_b">Class B</label>
-                </div>
-            </fieldset>
+           <div>
 
+            <br></br>            
+            <table className={styles.tableW3c}>
+                <tr>
+                    <th>Clsss Change</th>
+                </tr>
+                <tr>
+                    <td>  
+                    <div className={styles.formInline}>
+                    <label className={styles.radioContainer}> Class A
+                        <input type="radio" 
+                            name="class_change" value="A" 
+                            checked={this.state.class_change === 'A'} 
+                            onChange={this.handleChange} /> 
+                            <span className={styles.checkmark}></span>                       
+                    </label>
+
+                    <label className={styles.radioContainer}> Class B
+                        <input type="radio"
+                            name="class_change" value="B"
+                            checked={this.state.class_change === 'B'}
+                            onChange={this.handleChange} />   
+                            <span className={styles.checkmark}></span>                     
+                    </label>
+                     </div>       
+                    </td>
+                </tr>
+            </table>
+
+
+           </div>
+           
+           <br></br>
             <BOMitemForm IntelBOMState={this.state.IntelBOMState} affectedMOdels ={affectedModelsUI.data} onUpdate = {this.handleChildUpdate} />
+        <br></br>
+        <div>
+            <table className={styles.tableW3c}>
+            <tr>
+                <th colSpan={2}>
+                Change type
+                    </th>
+            </tr>
+            <tr>
+                <td>
+                <label className={styles.checkContainer}>Process Improvement/CIP Upgrade
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Process Improvement/CIP Upgrade"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
 
-            <div>
-                change type
-              
-                <input id="change_type1" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Process Improvement/CIP Upgrade"/>                
-                <label htmlFor="change_type1">Process Improvement/CIP Upgrade</label>
+                <label className={styles.checkContainer}>Safety
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Safety"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
 
-                <input id="change_type2" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Safety"/>                
-                <label htmlFor="change_type2">Safety</label>
-                
-                <input id="change_type3" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Reliability"/>                
-                <label htmlFor="change_type3">Reliability</label>
-                
-                <input id="change_type4" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Documentation"/>                
-                <label htmlFor="change_type4">Documentation</label>
-                
-                <input id="change_type5" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Cost"/>                
-                <label htmlFor="change_type5">Cost</label>
-                
-                <input id="change_type6" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="EOL (Obsolescence)"/>                
-                <label htmlFor="change_type6">EOL (Obsolescence)</label>
-                
-                <input id="change_type7" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Manufacturability"/>                
-                <label htmlFor="change_type7">Manufacturability</label>
-                
-                <input id="change_type8" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Software"/>                
-                <label htmlFor="change_type8">Software</label>
-                
-                <input id="change_type9" onChange={this.handleChangeCheckBox} 
-                    type="checkbox"  value="Others"/>                
-                <label htmlFor="change_type9">Others</label>                  
-                
+                <label className={styles.checkContainer}>Reliability
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Reliability"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+
+                <label className={styles.checkContainer}>Documentation
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Documentation"/>      
+                    <span className={styles.checkBoxmark}></span>                              
+                </label>
+
+                <label className={styles.checkContainer}>Cost
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Cost"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+                </td>
+                <td>
+
+
+                 <label className={styles.checkContainer}>EOL (Obsolescence)
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="EOL (Obsolescence)"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+
+
+                <label className={styles.checkContainer}>Manufacturability
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Manufacturability"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+
+
+                <label className={styles.checkContainer}>Software
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Software"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+
+
+                 <label className={styles.checkContainer}>Others
+                    <input onChange={this.handleChangeCheckBox} 
+                        type="checkbox"  value="Others"/>      
+                    <span className={styles.checkBoxmark}></span>          
+                </label>
+
                 {
                     this.state.isShowchange_type_freetext?
                 <div>
@@ -219,126 +300,155 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 </div>
                 : null 
                 } 
-
+                </td>
+            </tr>
+            </table>
             </div>
-
-            <div>
-                <p>Forecasted Cut-in:
+            <br></br>
+            <table className={styles.tableW3c}>
+                <tr>
+                    <th colSpan={2}> Forecasted Cut-in: <br></br>
                     Based on supply and usage rate of POR part, estimate when New part needs to be cut-in
-                </p>
+                    </th>                    
+                </tr>
+                <tr>
+                    <td>
+                        System Cut-in Number
+                    </td>
+                    <td>
+                     <input className={styles.inputW3c} name ="sys_cut_in_number" value = {this.state.sys_cut_in_number} onChange={this.handleChange}  />    
+                    </td>                  
+                </tr>
+                <tr>
+                    <td>
+                        Field Spares Cut-in Date
+                    </td>
+                    <td>
+                        <input className={styles.inputW3c} name ="field_spares_cut_in_date" value = {this.state.field_spares_cut_in_date} onChange={this.handleChange}  />    
+                    </td>                  
+                </tr>
+                <tr>
+                    <td>
+                        POR part no longer avail
+                    </td>
+                    <td>
+                    <input className={styles.inputW3c} name ="por_part_no_longer_avail" value = {this.state.por_part_no_longer_avail} onChange={this.handleChange}  />    
+                    </td>                  
+                </tr>
+            </table>
 
-                 <div>
-                    <label>System Cut-in Number: 
-                        <input name ="sys_cut_in_number" value = {this.state.sys_cut_in_number} onChange={this.handleChange}  />
+<br></br>
+            <table className={styles.tableW3c}>
+                <tr>
+                    <th> Implementation Plan (mark all that apply)</th>
+                </tr>
+                <tr>
+                    <td>  
+
+                        <label  className={styles.checkContainer}>  New Shippers
+                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
+                            type="checkbox"  value="New Shippers"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+                        <label  className={styles.checkContainer}>  Replace on Fail
+                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
+                            type="checkbox"  value="Replace on Fail"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+
+                        <label  className={styles.checkContainer}>  Elective Field Retrofit
+                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
+                            type="checkbox"  value="Elective Field Retrofit"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+                    </td>
+                </tr>
+            </table>
+
+
+            <br></br>
+            <table className={styles.tableW3c}>
+                <tr>
+                    <th>  Process Node: (update by BU Work group) Allowed for multiple selection </th>
+                </tr>
+                <tr>
+                    <td>  
+
+                        <label  className={styles.checkContainer}>1270
+                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
+                            type="checkbox"  value="1270"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+                        <label  className={styles.checkContainer}>1272
+                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
+                            type="checkbox"  value="1272"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+
+                        <label  className={styles.checkContainer}>1274
+                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
+                            type="checkbox"  value="1274"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+                        <label  className={styles.checkContainer}>1276
+                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
+                            type="checkbox"  value="1276"/> 
+                        <span className={styles.checkBoxmark}></span>                       
+                        </label>
+
+                    </td>
+                </tr>
+            </table>
+
+            <br></br>
+            <table className={styles.tableW3c}>
+                <tr>
+                    <th>Cost Impact</th>
+                </tr>
+                <tr>
+                    <td>  
+                    <div className={styles.formInline}>
+                    <label className={styles.radioContainer}> No Change
+                        <input type="radio" 
+                            name="cost_impact" value="No Change" 
+                            checked={this.state.cost_impact === 'No Change'} 
+                            onChange={this.handleChange} /> 
+                            <span className={styles.checkmark}></span>                       
                     </label>
-                </div>
-                
-                <div>
-                    <label>Field Spares Cut-in Date: 
-                        <input name ="field_spares_cut_in_date" value = {this.state.field_spares_cut_in_date} onChange={this.handleChange}  />
+
+                    <label className={styles.radioContainer}> Adder
+                        <input type="radio"
+                            name="cost_impact" value="Adder"
+                            checked={this.state.cost_impact === 'Adder'}
+                            onChange={this.handleChange} />   
+                            <span className={styles.checkmark}></span>                     
                     </label>
-                </div>
 
-                
-                <div>
-                    <label>POR part no longer avail: 
-                        <input name ="por_part_no_longer_avail" value = {this.state.por_part_no_longer_avail} onChange={this.handleChange}  />
+                    <label className={styles.radioContainer}> Savings
+                        <input type="radio"
+                            name="cost_impact" value="Savings"
+                            checked={this.state.cost_impact === 'Savings'}
+                            onChange={this.handleChange} />   
+                            <span className={styles.checkmark}></span>                     
                     </label>
-                </div>
-
-            </div>
-            <div>
-                <p>
-                    Implementation Plan (mark all that apply):
-                </p> 
-
-                <input id="implementation_plan1" onChange={this.handleChangeImplementationPlanCheckBox} 
-                    type="checkbox"  value="New Shippers"/>                
-                <label htmlFor="implementation_plan1">New Shippers</label>
-
-                <input id="implementation_plan2" onChange={this.handleChangeImplementationPlanCheckBox} 
-                    type="checkbox"  value="Replace on Fail"/>                
-                <label htmlFor="implementation_plan2">Replace on Fail</label>
-                
-                <input id="implementation_plan3" onChange={this.handleChangeImplementationPlanCheckBox} 
-                    type="checkbox"  value="Elective Field Retrofit"/>                
-                <label htmlFor="implementation_plan3">Elective Field Retrofit</label>
-
-            </div>
-
-            <div>
-                <p>
-                    Process Node: (update by BU Work group) Allowed for multiple selection 
-                </p>
-
-                <input id="process_node1" onChange={this.handleChangeProcessNodeCheckBox} 
-                    type="checkbox"  value="1270"/>                
-                <label htmlFor="process_node1">1270</label>
-
-                <input id="process_node2" onChange={this.handleChangeProcessNodeCheckBox} 
-                    type="checkbox"  value="1272"/>                
-                <label htmlFor="process_node2">1272</label>
-                
-                <input id="process_node3" onChange={this.handleChangeProcessNodeCheckBox} 
-                    type="checkbox"  value="1274"/>                
-                <label htmlFor="process_node3">1274</label>
-
-                <input id="process_node4" onChange={this.handleChangeProcessNodeCheckBox} 
-                    type="checkbox"  value="1276"/>                
-                <label htmlFor="process_node4">1276</label>
-
-            </div>
-            <div>
-                <ChoiceGroup
-                    options={[
-                        {
-                        key: 'A',
-                        text: 'No Change',
-                        'data-automation-id': 'auto1'
-                        } as IChoiceGroupOption,
-                        {
-                        key: 'B',
-                        text: 'Adder'
-                        }
-                        ,
-                        {
-                        key: 'C',
-                        text: 'Savings'
-                        }
-                    ]}
-                    label="Cost Impact"
-                    required={true}
-                />
-            </div>
-
-            <fieldset>
-                <legend>Cost Impact</legend>
-                <div>
-                    <input type="radio" id="cost_impact1" 
-                        name="cost_impact" value="No Change" 
-                        checked={this.state.cost_impact === 'No Change'} 
-                        onChange={this.handleChange} />                        
-                    <label htmlFor="cost_impact1">Class A</label>
-                </div>
-                <div>
-                    <input type="radio" id="cost_impact2" 
-                        name="cost_impact" value="Adder"
-                        checked={this.state.cost_impact === 'Adder'}
-                        onChange={this.handleChange} />                        
-                    <label htmlFor="cost_impact2">Adder</label>
-                </div>
-                <div>
-                    <input type="radio" id="cost_impact3" 
-                        name="cost_impact" value="Savings"
-                        checked={this.state.cost_impact === 'Savings'}
-                        onChange={this.handleChange} />                        
-                    <label htmlFor="cost_impact3">Savings</label>
-                </div>
-            </fieldset>
-
-
+                    </div>
+                    </td>
+                </tr>
+            </table>
                 <br/>
-                <button type="submit">Create</button>
+
+                <ActionButton
+                    iconProps={{ iconName:'Accept' }}
+                    onClick= {this.handleSubmit}
+                        >
+                    Submit
+                </ActionButton>
                 <br/>
             </form>
             
@@ -380,7 +490,15 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ');
+
+        console.log("handleSubmit");
+        console.log(this.state);
+        let objintelCEDataService = new intelCEDataService();
+
+        let sendData = this.state;
+
+        objintelCEDataService.createIntelCERequest(sendData,this.props.siteUrl);
+
         event.preventDefault();
     }
 

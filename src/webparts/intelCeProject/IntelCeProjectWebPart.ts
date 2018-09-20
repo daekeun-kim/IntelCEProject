@@ -22,7 +22,8 @@ export default class IntelCeProjectWebPart extends BaseClientSideWebPart<IIntelC
      
       IntelCeProject,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        siteUrl:this.context.pageContext.web.absoluteUrl
       }
     );
 

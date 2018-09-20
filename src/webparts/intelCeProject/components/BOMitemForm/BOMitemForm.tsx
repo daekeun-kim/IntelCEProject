@@ -2,6 +2,8 @@ import * as React from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { IIntelBOMState, IIntelBOMStateList } from '../../state/IIntelCEState';
+import styles from '../Assets/IntelCeProject.module.scss'
+import { ActionButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 
 export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
 
@@ -12,6 +14,7 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
             IntelBOMState:[    
                 {
                     requestid:"",
+                    seq:"",
                     model:"",
                     old_pn:"",
                     new_pn:"",
@@ -44,8 +47,16 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
         console.log("HandleCreate :");
         console.log(IntelBOMState);  
 
+        if (IntelBOMState.length >= 10 )
+        {
+            alert("You can't add more than 10");
+
+            return;
+        }
+
         let newIntelBOMState = {
             requestid: ""+this.id++,
+            seq:"",
             model:"",
             old_pn:"",
             new_pn:"",
@@ -54,6 +65,10 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
         } as IIntelBOMState
 
         let resultState = IntelBOMState.concat(newIntelBOMState);
+
+        for (let index = 0; index < resultState.length; index++) {
+            resultState[index].seq = (index +1).toString();
+       }
 
         this.setState({
             IntelBOMState: resultState
@@ -76,10 +91,14 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
         else
         {
 
-            resultState = IntelBOMState.filter(info => info.requestid !== id);
+            resultState = IntelBOMState.filter(info => info.seq !== id);
+
+            for (let index = 0; index < resultState.length; index++) {
+                resultState[index].seq = (index +1).toString();
+            }
 
             this.setState({
-            IntelBOMState: IntelBOMState.filter(info => info.requestid !== id)
+            IntelBOMState: resultState
             })
 
             this.props.onUpdate(resultState);
@@ -128,31 +147,65 @@ export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
         
         const { IntelBOMState } = this.state;
         return(            
-        <div>
-            <button type="button" onClick={this.handleCreate} >Add impact intel BOM</button>
+        <div>           
+            
+            <table className={styles.tableW3c}>  
+            <tr>
+                <th colSpan={6}>
+                Impact to Intel BOM: <br></br>
+                    (if more than one model is affected, list new/old PNs separately)
+                </th>
+            </tr>
+            <tr>
+                <td colSpan={6}>
+                    <ActionButton
+                    iconProps={{ iconName:'Add' }}
+                    onClick= {this.handleCreate}
+                        >
+                    Add impact intel BOM
+                    </ActionButton>            
+            </td>
+            </tr>        
+            <tr> 
+                <th>Model</th>
+                <th>Old P/N</th>
+                <th>New P/N</th>         
+                <th>Part <br></br> descdription</th>         
+                <th>Impacts <br></br> CCL <br></br> (Y/N)</th>        
+                <th></th> 
+            </tr>
             {this.state.IntelBOMState.map((item, index) =>
-                <div key = {item.requestid} >
-
-                    <select onChange={this.handleInputChange } data-index={index} data-name="model">  
-                        <option key="initial" value="">Select an Model...</option>
-                    {
-                        this.props.affectedMOdels.map(modelitem =>{
-                           return <option key={modelitem.key} value={modelitem.key}>{modelitem.text}</option>                          
-                        }) 
-                     }                         
-
-                        
-                       
-                    </select>
-
-                    <input onChange={this.handleInputChange } data-index={index} data-name="old_pn"  />
-                    <input onChange={this.handleInputChange } data-index={index} data-name="new_pn"   />
-                    <input onChange={this.handleInputChange } data-index={index} data-name="part_description"   />
-                    <input onChange={this.handleInputChange } data-index={index} data-name="impacts_ccl_yn"  />
-
-                    <button type="button" onClick={() => this.handleRemove(item.requestid)} title="Remove Item" >Remove item</button>
-                </div>
+                <tr  key = {item.requestid} >
+                    <td>                    
+                        <select onChange={this.handleInputChange} data-index={index} data-name="model">  
+                            <option key="initial" value="">Select an Model...</option>
+                        {
+                            this.props.affectedMOdels.map(modelitem =>{
+                            return <option key={modelitem.key} value={modelitem.key}>{modelitem.text}</option>                          
+                            }) 
+                        }                       
+                        </select>
+                    </td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="old_pn"  /></td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="new_pn"   /></td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="part_description"   /></td>
+                    <td>
+                        <select onChange={this.handleInputChange} data-index={index} data-name="impacts_ccl_yn">  
+                                <option value="">Y/N</option>
+                                <option value="Y">Y</option>
+                                <option value="N">N</option>                    
+                        </select>
+                    </td>
+                    <td>
+                        <ActionButton
+                            iconProps={{ iconName:'Delete' }}
+                            onClick= {() => this.handleRemove(item.seq)}
+                                >                            
+                        </ActionButton>
+                    </td>                    
+                </tr>           
             )}
+            </table>
         </div>
         );
     }

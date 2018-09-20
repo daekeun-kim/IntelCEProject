@@ -30,6 +30,7 @@ export interface IIntelCEMainState{
 // Represents one purchase item in the purchase request.
 export interface IIntelBOMState{
     requestid:string;
+    seq:string;
     model:string;
     old_pn:string;
     new_pn:string;
