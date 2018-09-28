@@ -5,7 +5,7 @@ import { IIntelBOMState, IIntelBOMStateList } from '../../state/IIntelCEState';
 import styles from '../Assets/IntelCeProject.module.scss'
 import { ActionButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 
-export class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
+export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>{
 
     constructor(props){
         super(props);

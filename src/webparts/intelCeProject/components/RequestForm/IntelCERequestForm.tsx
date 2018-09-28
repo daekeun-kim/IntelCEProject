@@ -8,10 +8,11 @@ import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { DefaultButton, IButtonProps ,ActionButton } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { IIntelCEMainState } from '../../state/IIntelCEState';
-import { BOMitemForm } from '../BOMitemform/BOMitemform';
+
 import { IIntelBOMStateList } from '../../../../../lib/webparts/intelCeProject/state/IIntelCEState';
 import intelCEDataService from '../../services/intelCEDataService';
-import styles from '../Assets/IntelCeProject.module.scss'
+import styles from '../Assets/IntelCeProject.module.scss';
+import BOMitemForm from '../PartialForm/BOMitemForm';
 
 
 export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
@@ -21,9 +22,6 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
         super(props);
 
         let currnetDate = this.GetCurrentDateString();        
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-
 
         this.state = {
 
@@ -463,7 +461,6 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
         
         objintelCEDataService.getProductModelList().then((resp) => {
             console.log("componentDidMount");
-            console.log("componentDidMount2.2");
             console.log(resp);
             resultModelListfromSharePoint = resp;       
 
@@ -473,7 +470,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                 ...this.state,
                 affectedModelsList : resultModelListfromSharePoint.affectedModelsList
             });
-            console.log("componentDidMount2.23333");
+
         });        
         console.log("componentDidMount1");
 
@@ -489,7 +486,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
 
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
 
         console.log("handleSubmit");
         console.log(this.state);
@@ -527,7 +524,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
 
     private handleChangeMultiSelect = (option: IDropdownOption, index?: number) => {
         
-        console.log("handleChildUpdate2");
+        console.log("handleChangeMultiSelect");
         console.log(option);
         console.log(this.modeldropdown);
 

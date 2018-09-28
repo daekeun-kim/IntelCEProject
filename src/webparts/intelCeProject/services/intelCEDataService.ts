@@ -31,9 +31,7 @@ export default class intelCEDataService implements IintelCEDataService{
         });
     }
 
-    // Creates a new purchase request. The request is created in two list. One where the master data is stored and one
-    // where the purchase items are stored with a reference of the ID of master request.
-    async createIntelCERequest(IntelCERequestData:IIntelCEMainState,siteUrl) : Promise<any>{
+    createIntelCERequest(IntelCERequestData:IIntelCEMainState,siteUrl) : Promise<any>{
 
         let sRequestid = this.newGuid();
 
