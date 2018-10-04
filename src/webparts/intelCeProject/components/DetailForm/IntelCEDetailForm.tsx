@@ -14,8 +14,13 @@ import intelCEDataService from '../../services/intelCEDataService';
 import styles from '../Assets/IntelCeProject.module.scss';
 import BOMitemForm from '../PartialForm/BOMitemForm';
 
+import {
+    Redirect,
+    withRouter
+  } from 'react-router-dom'
 
-export default class IntelCERequestForm extends React.Component<any,IIntelCEMainState>{
+
+export class IntelCEDetailForm extends React.Component<any,IIntelCEMainState>{
     
     
     constructor(props){
@@ -85,7 +90,8 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
 
     public render(){
     
-        console.log("render");
+        console.log("Main render");
+        console.log(this.state);
 
         /* Get affected Model list from state */
         let affectedModelist = this.state.affectedModelsList;
@@ -108,7 +114,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                </th>
                <td>
                 <div>
-                    <input id="intel_date" className={styles.inputW3c} type="text" name = "reqeuestdate"     
+                    <input id="intel_date"className={styles.inputW3c} type="text" name = "reqeuestdate"     
                         placeholder="Date"           
                         value = {this.state.reqeuestdate} onChange={this.handleChange} />   
                 </div>
@@ -169,16 +175,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                </th>
                <td colSpan={3}>
                 <div>
-                    <Dropdown                           
-                        placeHolder="Select an Model"                           
-                        ariaLabel="Select an Model"
-                        multiSelect
-                        onChanged={this.handleChangeMultiSelect}
-                        options={affectedModelsUI.data}
-                        ref={ref => {
-                            this.modeldropdown = ref;
-                        }}
-                    /> 
+                    
                 </div>
                </td>               
            </tr>
@@ -230,63 +227,45 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
             <tr>
                 <td>
                 <label className={styles.checkContainer}>Process Improvement/CIP Upgrade
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Process Improvement/CIP Upgrade"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                            
                 </label>
 
                 <label className={styles.checkContainer}>Safety
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Safety"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                    
                 </label>
 
                 <label className={styles.checkContainer}>Reliability
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Reliability"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                       
                 </label>
 
                 <label className={styles.checkContainer}>Documentation
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Documentation"/>      
-                    <span className={styles.checkBoxmark}></span>                              
+                                            
                 </label>
 
                 <label className={styles.checkContainer}>Cost
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Cost"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                   
                 </label>
                 </td>
                 <td>
 
 
                  <label className={styles.checkContainer}>EOL (Obsolescence)
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="EOL (Obsolescence)"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                  
                 </label>
 
 
                 <label className={styles.checkContainer}>Manufacturability
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Manufacturability"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                            
                 </label>
 
 
                 <label className={styles.checkContainer}>Software
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Software"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                         
                 </label>
 
 
                  <label className={styles.checkContainer}>Others
-                    <input onChange={this.handleChangeCheckBox} 
-                        type="checkbox"  value="Others"/>      
-                    <span className={styles.checkBoxmark}></span>          
+                              
                 </label>
 
                 {
@@ -344,22 +323,16 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                     <td>  
 
                         <label  className={styles.checkContainer}>  New Shippers
-                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
-                            type="checkbox"  value="New Shippers"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                          
                         </label>
 
                         <label  className={styles.checkContainer}>  Replace on Fail
-                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
-                            type="checkbox"  value="Replace on Fail"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                      
                         </label>
 
 
                         <label  className={styles.checkContainer}>  Elective Field Retrofit
-                        <input  onChange={this.handleChangeImplementationPlanCheckBox} 
-                            type="checkbox"  value="Elective Field Retrofit"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                            
                         </label>
 
                     </td>
@@ -376,28 +349,20 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
                     <td>  
 
                         <label  className={styles.checkContainer}>1270
-                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
-                            type="checkbox"  value="1270"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                             
                         </label>
 
                         <label  className={styles.checkContainer}>1272
-                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
-                            type="checkbox"  value="1272"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                       
                         </label>
 
 
                         <label  className={styles.checkContainer}>1274
-                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
-                            type="checkbox"  value="1274"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                   
                         </label>
 
                         <label  className={styles.checkContainer}>1276
-                        <input  onChange={this.handleChangeProcessNodeCheckBox} 
-                            type="checkbox"  value="1276"/> 
-                        <span className={styles.checkBoxmark}></span>                       
+                                          
                         </label>
 
                     </td>
@@ -456,48 +421,53 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
 
     componentDidMount(){
 
+        let {match} = this.props;
+        let id = match.params.id
+        console.log("componentDi45645645645dMounwerwerwert");
+        console.log(match);
+        console.log(id);
+
         let objintelCEDataService = new intelCEDataService();
         let resultModelListfromSharePoint= {} as IIntelCEMainState;
-        
+
         objintelCEDataService.getProductModelList().then((resp) => {
             console.log("componentDidMount");
             console.log(resp);
             resultModelListfromSharePoint = resp;       
 
             console.log(resultModelListfromSharePoint.affectedModelsList)
-            
-            this.setState({
-                ...this.state,
-                affectedModelsList : resultModelListfromSharePoint.affectedModelsList
-            });
 
-        });        
+            objintelCEDataService.getIntelCEDetails(id).then((resp) => {
+                console.log("componentDidMount444");
+                console.log(resp); 
+                console.log(resultModelListfromSharePoint);
+                
+                this.setState({
+                    ...resp
+                    ,affectedModelsList : resultModelListfromSharePoint.affectedModelsList
+                });
+    
+            });            
+
+        });  
+        
+
+
+
         console.log("componentDidMount1");
 
     }
 
-
     componentDidUpdate(prevProps, prevState, snapshot) {
     
         console.log("componentDidUpdate");
-        console.log(this.state);        
-    
-
-        //this.props.onUpdate(this.state.IntelBOMState);
+        console.log(this.state);        ;
 
     }
 
     handleSubmit = (event) => {
 
-        console.log("handleSubmit");
-        console.log(this.state);
-        let objintelCEDataService = new intelCEDataService();
 
-        let sendData = this.state;
-
-        objintelCEDataService.createIntelCERequest(sendData,this.props.siteUrl);
-
-        event.preventDefault();
     }
 
     handleChildUpdate = (fromChildState:any) => {
@@ -522,156 +492,7 @@ export default class IntelCERequestForm extends React.Component<any,IIntelCEMain
           [e.target.name]: e.target.value
         });      
     };
-
-    private handleChangeMultiSelect = (option: IDropdownOption, index?: number) => {
-        
-        console.log("handleChangeMultiSelect");
-        console.log(option);
-        console.log(this.modeldropdown);
-
-        const updatedSelectedItem =  this.seletectedModels ? this.copyArray(this.seletectedModels) : [];
-
-        let ModelListWithComma = "";
-
-        if (option.selected) {
-          // add the option if it's checked
-          updatedSelectedItem.push(option.key);
-        } else {
-          // remove the option if it's unchecked
-          const currIndex = updatedSelectedItem.indexOf(option.key);
-          if (currIndex > -1) {
-            updatedSelectedItem.splice(currIndex, 1);
-          }
-        }
-        
-        this.seletectedModels = updatedSelectedItem;
-
-        ModelListWithComma= updatedSelectedItem.join(',');
-
-        this.setState({
-          affected_models: ModelListWithComma
-        });
-
-
-    }
-
-    private handleChangeCheckBox = (ev) => {
-        
-        console.log("handleChangeCheckBox");
-        console.log(ev);
-
-
-        let ChangeTypeWithComma = "";
-        let isShowFreeText = this.state.isShowchange_type_freetext;
-
-        const updateCheckboxItems =  this.changeTypeList ? this.copyArray(this.changeTypeList) : [];
-
-        let CheckboxItemWithComma = "";
-
-        if (ev.target.checked === true) {
-          // add the option if it's checked
-          updateCheckboxItems.push(ev.target.value);
-
-          if ( ev.target.value === "Others")
-          {
-            isShowFreeText = true;
-          }
-
-
-        } else {
-          // remove the option if it's unchecked
-          const currIndex = updateCheckboxItems.indexOf(ev.target.value);
-          if (currIndex > -1) {
-            updateCheckboxItems.splice(currIndex, 1);
-          }
-
-          if ( ev.target.value === "Others")
-          {
-            isShowFreeText = false;
-          }
-
-        }
-          
-        this.changeTypeList = updateCheckboxItems;
-
-        ChangeTypeWithComma= updateCheckboxItems.join(',');
-
-        this.setState({
-            isShowchange_type_freetext : isShowFreeText,
-            change_type: ChangeTypeWithComma
-        });
-    }
-
-    private handleChangeImplementationPlanCheckBox = (ev) => {
-        
-        console.log("handleChangeImplementationPlanCheckBox");
-        console.log(ev);
-
-        let impPlanWithComma = "";
-
-        const impPlanList =  this.implementation_planList ? this.copyArray(this.implementation_planList) : [];
-
-        let CheckboxItemWithComma = "";
-
-        if (ev.target.checked === true) {
-          // add the option if it's checked
-          impPlanList.push(ev.target.value);
-
-        } else {
-          // remove the option if it's unchecked
-          const currIndex = impPlanList.indexOf(ev.target.value);
-          if (currIndex > -1) {
-            impPlanList.splice(currIndex, 1);
-          }
-        }
-          
-        this.implementation_planList = impPlanList;
-
-        CheckboxItemWithComma= impPlanList.join(',');
-
-        this.setState({
-            implementation_plan: CheckboxItemWithComma
-        });
-    }
-
-    private handleChangeProcessNodeCheckBox = (ev) => {
-        
-        console.log("handleChangeImplementationPlanCheckBox");
-        console.log(ev);
-
-        let impPlanWithComma = "";
-
-        const iProcessNodeList =  this.processNodeList ? this.copyArray(this.processNodeList) : [];
-
-        let processNodeListwithComma = "";
-
-        if (ev.target.checked === true) {
-          // add the option if it's checked
-          iProcessNodeList.push(ev.target.value);
-
-        } else {
-          // remove the option if it's unchecked
-          const currIndex = iProcessNodeList.indexOf(ev.target.value);
-          if (currIndex > -1) {
-            iProcessNodeList.splice(currIndex, 1);
-          }
-        }
-          
-        this.processNodeList = iProcessNodeList;
-
-        processNodeListwithComma= iProcessNodeList.join(',');
-
-        this.setState({
-            process_node: processNodeListwithComma
-        });
-    }
-    
-    private copyArray = (array: any[]): any[] => {
-        const newArray: any[] = [];
-        for (let i = 0; i < array.length; i++) {
-          newArray[i] = array[i];
-        }
-        return newArray;
-    };
  
 }
+
+export default withRouter(IntelCEDetailForm);

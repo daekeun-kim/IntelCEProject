@@ -30,8 +30,10 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
 
     componentDidMount(){
 
+        console.log("bomitemcomponentDidMount");
+        console.log(this.props.IntelBOMState);
+
         this.setState({
-            ...this.state,
             IntelBOMState:this.props.IntelBOMState
         });
 
@@ -39,7 +41,21 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
+        console.log("bomitemcomponentDidUpdate");
+        console.log(this.state);
+
     }
+
+
+    componentWillReceiveProps(nextProps) {
+
+        console.log("componentWillReceiveProps");
+        console.log(nextProps.IntelBOMState);
+
+
+        this.setState({ IntelBOMState:nextProps.IntelBOMState });  
+      }
+
 
     handleCreate = (data) => {
 
@@ -145,6 +161,8 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
 
     public render(){
         
+        console.log("partail rendor");
+        console.log(this.state);
         const { IntelBOMState } = this.state;
         return(            
         <div>           
@@ -175,7 +193,7 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
                 <th></th> 
             </tr>
             {this.state.IntelBOMState.map((item, index) =>
-                <tr  key = {item.requestid} >
+                <tr  key = {item.seq} >
                     <td>                    
                         <select onChange={this.handleInputChange} data-index={index} data-name="model">  
                             <option key="initial" value="">Select an Model...</option>
@@ -186,9 +204,9 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
                         }                       
                         </select>
                     </td>
-                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="old_pn"  /></td>
-                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="new_pn"   /></td>
-                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="part_description"   /></td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="old_pn" value ={item.old_pn}  /></td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="new_pn" value = {item.new_pn}  /></td>
+                    <td><input className={styles.inputW3c} onChange={this.handleInputChange } data-index={index} data-name="part_description" value = {item.part_description}  /></td>
                     <td>
                         <select onChange={this.handleInputChange} data-index={index} data-name="impacts_ccl_yn">  
                                 <option value="">Y/N</option>

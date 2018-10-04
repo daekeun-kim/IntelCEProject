@@ -221,3 +221,36 @@ background: white;
 .formInline label {
   margin: 5px 10px 5px 0;
 }
+
+/*-----------------------  Pageination -----------------------------*/
+
+.paginationContainer{
+  text-align: center;
+  background-color: #fff;
+  padding: 15px 5px;
+    button{
+      font-family: Arial, Helvetica, 'Roboto';
+      font-size: 12px!important;
+      color: #0488c4;
+      padding-left: 0px;
+      padding-right:0px;
+      min-width: 26px;
+      height: 26px;
+      background-color: #fff;
+        &:hover{
+          background-color: #0488c4;
+          color: #fff;
+        }
+        &.ms-Button--primary{
+          color: #fff!important;
+          background-color: rgb(4, 136, 196)!important;
+        }
+        i{
+          font-size: 11px!important;
+        }
+      
+    }
+   
+  
+  }
+  
