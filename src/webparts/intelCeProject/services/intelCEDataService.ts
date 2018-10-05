@@ -4,7 +4,7 @@ import IintelCEDataService from "./IintelCEDataService";
 import { IIntelCEMainState , } from "../state/IIntelCEState";
 
 
-
+// CRUD method for sharepoint list using sp-pnp-js
 export default class intelCEDataService implements IintelCEDataService{
 
     private getProductModelListValues():Promise<any>{
@@ -33,11 +33,13 @@ export default class intelCEDataService implements IintelCEDataService{
 
     getIntelCEList(pageIndex:number,itemCount:number):Promise<any>{
 
-       let skipNum = pageIndex * itemCount;
+        let skipNum = pageIndex * itemCount;
 
-       return  pnp.sp.web.lists.getByTitle("tmpIntelCEMain").items.select("requestid","ecn","division","corp_tracker","eco","affected_models","class_change","change_type","reqeuestdate")
-        .skip(skipNum).top(itemCount).getPaged().then(p => {             
-            console.log("TTT");
+        console.log(skipNum);
+
+        return  pnp.sp.web.lists.getByTitle("tmpIntelCEMain").items.select("requestid","ecn","division","corp_tracker","eco","affected_models","class_change","change_type","reqeuestdate")
+        .skip(skipNum).top(itemCount).orderBy("reqeuestdate").get().then(p => {             
+
             let resultItemList: {
                 requestid:string,
                 reqeuestdate:string,
@@ -50,9 +52,7 @@ export default class intelCEDataService implements IintelCEDataService{
                 change_type:string, 
               }[] = [];
 
-
-            p.results.map(p1 => { 
-
+            p.map(p1 => { 
                 resultItemList.push(
                     {
                         requestid: p1.requestid,
@@ -65,27 +65,20 @@ export default class intelCEDataService implements IintelCEDataService{
                         change_type : p1.change_type,
                         reqeuestdate : p1.reqeuestdate
                     }
-                );
-       
-             } );
+                );       
+             } );         
 
             console.log(resultItemList);
-            //console.log(delete p.results.odata);
-
-            return resultItemList
-
+            return resultItemList;
         });
+
     }
 
     getIntelCEListTotalCount():Promise<any>{
 
         return  pnp.sp.web.lists.getByTitle("tmpIntelCEMain").items.select("Title").filter("").get().then(p => {
-            console.log("getIntelCEListTotalCounts");
-            console.log(p);
-            console.log(p.length);
-             
-            return p.length
- 
+            console.log(p.length);             
+            return p.length; 
          });
      }
 
@@ -146,14 +139,11 @@ export default class intelCEDataService implements IintelCEDataService{
 
                 );
 
-                console.log(newFormControlsState);    
+                console.log(newFormControlsState);   
 
                 return newFormControlsState;
             });
-
         });
-
-
     }
 
     createIntelCERequest(IntelCERequestData:IIntelCEMainState,siteUrl) : Promise<any>{
@@ -221,9 +211,7 @@ export default class intelCEDataService implements IintelCEDataService{
     private newGuid()
     {
        let  guid = (this.S4() + this.S4() + "-" + this.S4() + "-4" + this.S4().substr(0,3) + "-" + this.S4() + "-" + this.S4() + this.S4() + this.S4()).toLowerCase();
-
        return guid;
-
     }
 
     private S4(){

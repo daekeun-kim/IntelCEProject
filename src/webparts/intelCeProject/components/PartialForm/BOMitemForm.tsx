@@ -22,7 +22,7 @@ export default class BOMitemForm extends React.Component<any,IIntelBOMStateList>
                     impacts_ccl_yn:""
                 }
             ]
-        } ;
+        };
         
     }   
 
